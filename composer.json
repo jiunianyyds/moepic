@@ -1,0 +1,28 @@
+{
+    "name": "jiunian/moepic",
+    "description": "萌图云 MoePic - 二次元可爱风轻量级 PHP 图床系统",
+    "type": "project",
+    "license": "MIT",
+    "keywords": [
+        "image-hosting",
+        "php",
+        "mysql",
+        "upload",
+        "thumbnail"
+    ],
+    "authors": [
+        {
+            "name": "玖念"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-gd": "*"
+    },
+    "config": {
+        "platform-check": false
+    },
+    "minimum-stability": "stable"
+}

@@ -20,30 +20,26 @@ RewriteRule ^uploads/(.+\.(jpg|jpeg|png|gif|webp))$ image.php?f=$1 [L,QSA]
 <FilesMatch "\.(sql|env|log)$">
     Require all denied
 </FilesMatch>
-<DirectoryMatch "^\.(?!htaccess).*">
+
+# 禁止访问以点开头的隐藏文件(除 .htaccess 本身)
+<FilesMatch "^\.(?!htaccess).*">
     Require all denied
-</DirectoryMatch>
+</FilesMatch>
 
 # 禁止在上传目录执行 PHP(双重防护文件上传漏洞)
-<Directory "uploads">
-    <FilesMatch "\.php$">
-        Require all denied
-    </FilesMatch>
-    # 关闭脚本执行
-    php_admin_value engine Off
-    Options -ExecCGI -Indexes
-</Directory>
+RewriteRule ^uploads/.*\.php$ - [F,L]
+
+# 禁止直接访问敏感目录
+RewriteRule ^config/ - [F,L]
+RewriteRule ^thumbs/uploads/ - [F,L]
 
 # 禁止列出目录
 Options -Indexes
 
-# 保护配置文件
+# 保护配置文件(额外一层,即使通过某种方式绕过 Rewrite 也拒绝访问)
 <FilesMatch "(database\.php|functions\.php|core\.php)$">
     Require all denied
 </FilesMatch>
-<Directory "config">
-    Require all denied
-</Directory>
 
 # ============================================================
 # 性能:静态资源缓存

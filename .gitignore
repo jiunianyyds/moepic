@@ -4,6 +4,30 @@ config/database.php
 # 安装锁(运行时生成)
 install.lock
 
-# 用户上传内容(运行时数据)
+# 运行时上传数据
 uploads/
 thumbs/uploads/
+
+# 日志
+*.log
+logs/
+
+# 环境变量
+.env
+.env.*
+
+# Composer
+/vendor/
+composer.lock
+
+# IDE / 编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini

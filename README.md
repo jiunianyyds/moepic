@@ -28,7 +28,7 @@ PHP · MySQL · 响应式 · 多功能图床
 
 | 类别 | 技术 |
 | ---- | ---- |
-| 后端 | PHP 7.1+（推荐 8.x） |
+| 后端 | PHP 8.0+ |
 | 数据库 | MySQL 5.7+ / MariaDB（UTF-8mb4） |
 | 前端 | 原生 HTML / CSS / JavaScript（无框架，零依赖） |
 | 图片处理 | GD 扩展（缩略图生成、压缩） |
@@ -49,7 +49,8 @@ moepic/
 │   └── delete.php            # 图片删除接口
 ├── config/
 │   ├── core.php              # 入口引导（所有页面统一 require）
-│   ├── database.php          # 数据库 / 站点基础配置
+│   ├── database.php          # 数据库 / 站点基础配置（由 database.example.php 复制生成）
+│   ├── database.example.php  # 数据库配置模板（部署前复制为 database.php）
 │   └── functions.php         # 公共函数库（Session/CSRF/鉴权/验证）
 ├── partials/
 │   ├── nav.php               # 公共导航栏
@@ -77,7 +78,7 @@ moepic/
 
 ## ⚙️ 环境要求
 
-- **PHP** ≥ 7.1（推荐 8.0+），需开启 PDO MySQL 与 GD 扩展
+- **PHP** ≥ 8.0，需开启 PDO MySQL 与 GD 扩展
 - **数据库** MySQL 5.7+ / MariaDB，需支持 UTF-8mb4
 - **Web 服务器** Apache（支持 `.htaccess`）或 Nginx
 - 现代浏览器（Chrome / Firefox / Edge / Safari）
@@ -87,7 +88,13 @@ moepic/
 ### 方式一：一键安装向导（推荐）
 
 1. 将整个 `moepic/` 目录上传至网站根目录（或子目录）。
-2. 编辑 [config/database.php](config/database.php)，填入你的 MySQL 连接信息：
+2. 复制配置模板并填写你的 MySQL 连接信息：
+
+   ```bash
+   cp config/database.example.php config/database.php
+   ```
+
+   然后编辑 `config/database.php`：
 
    ```php
    define('DB_HOST', 'localhost');
@@ -111,7 +118,7 @@ moepic/
 
 1. 在 phpMyAdmin 中创建数据库（如 `moepic`，字符集 `utf8mb4`）。
 2. 导入 `database.sql`。
-3. 修改 `config/database.php` 中的数据库配置。
+3. 复制 `config/database.example.php` 为 `config/database.php`，并修改其中的数据库配置。
 4. 设置目录权限，访问首页即可使用。
 
 ### Nginx 部署提示
@@ -223,7 +230,9 @@ POST /api/delete.php?id=图片ID
 
 ## 📝 许可证
 
-在开源项目标准规范下自由使用与二次开发。请保留作者署名，并遵守相应开源协议规定。
+本项目采用 [MIT 许可证](LICENSE) 开源。
+
+在 MIT 许可范围内可自由使用、修改与二次开发，请保留作者署名。
 
 ## 💬 关于作者
 
