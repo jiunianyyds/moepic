@@ -1,0 +1,9 @@
+# 敏感配置(含数据库密码)
+config/database.php
+
+# 安装锁(运行时生成)
+install.lock
+
+# 用户上传内容(运行时数据)
+uploads/
+thumbs/uploads/
