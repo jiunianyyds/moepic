@@ -1,0 +1,59 @@
+# ============================================================
+# 萌图云 MoePic - Apache 伪静态 / 安全规则 (.htaccess)
+# 若为 Nginx,请将下方 rewrite 规则翻译为 try_files 指令
+# ============================================================
+
+# ---- 开启重写引擎 ----
+RewriteEngine On
+
+# ---- 图片访问入口: /uploads/xxx.jpg(磁盘不存在时) → image.php?f=xxx.jpg ----
+#  (实现防盗链 + 缩略图按需生成 + 404)
+#  注意: 处理器须位于 uploads/ 之外,因 uploads/ 禁止 PHP 执行
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^uploads/(.+\.(jpg|jpeg|png|gif|webp))$ image.php?f=$1 [L,QSA]
+
+# ---- 前台"美化URL"预留(当前为直链,可按需扩展) ----
+
+# ============================================================
+# 安全:禁止访问敏感目录 / 文件
+# ============================================================
+<FilesMatch "\.(sql|env|log)$">
+    Require all denied
+</FilesMatch>
+<DirectoryMatch "^\.(?!htaccess).*">
+    Require all denied
+</DirectoryMatch>
+
+# 禁止在上传目录执行 PHP(双重防护文件上传漏洞)
+<Directory "uploads">
+    <FilesMatch "\.php$">
+        Require all denied
+    </FilesMatch>
+    # 关闭脚本执行
+    php_admin_value engine Off
+    Options -ExecCGI -Indexes
+</Directory>
+
+# 禁止列出目录
+Options -Indexes
+
+# 保护配置文件
+<FilesMatch "(database\.php|functions\.php|core\.php)$">
+    Require all denied
+</FilesMatch>
+<Directory "config">
+    Require all denied
+</Directory>
+
+# ============================================================
+# 性能:静态资源缓存
+# ============================================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg  "access plus 30 days"
+    ExpiresByType image/png   "access plus 30 days"
+    ExpiresByType image/gif   "access plus 30 days"
+    ExpiresByType image/webp  "access plus 30 days"
+    ExpiresByType text/css    "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
