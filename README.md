@@ -125,7 +125,7 @@ moepic/
 
 项目已提供 [nginx.conf](nginx.conf) 参考配置，包含图片入口 Rewrite、禁止上传目录执行 PHP、静态资源缓存等规则，按注释将 `root` 与 `fastcgi_pass` 替换为你的实际路径即可。
 
-## � 可选：启用图片防盗链与访问统计
+## 🔧 可选：启用图片防盗链与访问统计
 
 默认配置采用**静态文件优先**策略：图片一旦上传到 `uploads/`，Web 服务器会直接返回文件，以获得最佳性能。因此 `image.php` 中的防盗链校验与访问统计默认**不会**对已有原图生效。
 
@@ -162,7 +162,7 @@ location ~ ^/uploads/(.+\.(jpg|jpeg|png|gif|webp))$ {
 
 ```nginx
 location ~ ^/uploads/(.+\.(jpg|jpeg|png|gif|webp))$ {
-    rewrite ^/uploads/(.+)$ /image.php?f=$1 last;
+    rewrite ^/uploads/(.+\.(jpg|jpeg|png|gif|webp))$ /image.php?f=$1 last;
 }
 ```
 
@@ -171,7 +171,7 @@ location ~ ^/uploads/(.+\.(jpg|jpeg|png|gif|webp))$ {
 - 开启后每张图片请求都会进入 PHP，**性能会有所下降**，建议在高并发场景谨慎开启。
 - 防盗链的严格程度可在 `config/functions.php` 的 `hotlink_check()` 函数中调整（默认仅对 referer 做宽松校验）。
 
-## � 使用指南
+## 📚 使用指南
 
 ### 前台首页
 
@@ -263,7 +263,7 @@ POST /api/delete.php?id=图片ID
 ## ❓ 常见问题（FAQ）
 
 **Q1：页面显示 500 错误？**
-检查 PHP 版本（≥7.1）以及 GD / PDO MySQL 扩展是否开启，同时确认 `uploads/` 目录可写。
+检查 PHP 版本（≥8.0）以及 GD / PDO MySQL 扩展是否开启，同时确认 `uploads/` 目录可写。
 
 **Q2：上传提示「文件过大」，如何调整上限？**
 进入管理后台「站点设置」修改上传大小上限；也可通过环境变量 `MOEPIC_MAX_MB` 覆盖默认值。
@@ -288,4 +288,4 @@ POST /api/delete.php?id=图片ID
 
 ---
 
-  Made with 💖 &amp; 🌸 for anime lovers.
+  Made with 💖 & 🌸 for anime lovers.
